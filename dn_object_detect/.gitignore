@@ -1,3 +1,6 @@
 /data/*
+!/data/yolo.cfg
+!/data/coco.names
+!/data/yolo.weights
 /datasets/*
 /BBox-Label-Tool/*
