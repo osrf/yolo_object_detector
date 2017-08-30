@@ -16,6 +16,15 @@ find_package(catkin REQUIRED COMPONENTS
   darknet_ros
 )
 
+set(URL https://pjreddie.com/media/files/yolo.weights)
+set(DOWNLOAD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/data/yolo.weights)
+if (NOT EXISTS "${DOWNLOAD_PATH}")
+  message(STATUS "Downloading Yolo weights ...")
+  file(
+    DOWNLOAD "${URL}" "${DOWNLOAD_PATH}"
+    SHOW_PROGRESS
+  )
+endif()
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
