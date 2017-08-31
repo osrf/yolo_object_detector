@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
-  message_generation
   vision_msgs
   darknet_ros
 )
@@ -81,11 +80,9 @@ endif()
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-   FILES
-   ObjectInfo.msg
-   DetectedObjects.msg
-)
+# add_message_files(
+#   FILES
+#)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -102,10 +99,10 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-   DEPENDENCIES
-   std_msgs
-)
+#generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+#)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -137,11 +134,11 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES dn_object_detect
-#  CATKIN_DEPENDS cv_bridge image_geometry image_transport roscpp sensor_msgs std_msgs
+  INCLUDE_DIRS include
+  LIBRARIES dn_object_detect
+  CATKIN_DEPENDS cv_bridge image_geometry image_transport roscpp sensor_msgs std_msgs
 #  DEPENDS system_lib
-  CATKIN_DEPENDS message_runtime
+#  CATKIN_DEPENDS message_runtime
 )
 find_package(OpenCV REQUIRED)
 ###########
@@ -168,28 +165,19 @@ add_executable(dn_object_detect
    src/MultiClassObjectDetector.cpp
 )
 
-add_executable(dn_object_detect_modified
-   src/dn_object_detect_modified.cpp
-   src/MultiClassObjectDetectorModified.cpp
-)
+
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(dn_object_detect ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_dependencies(dn_object_detect ${catkin_EXPORTED_TARGETS})
-add_dependencies(dn_object_detect ${PROJECT_NAME}_generate_messages_cpp)
-
-add_dependencies(dn_object_detect_modified ${catkin_EXPORTED_TARGETS})
-
+#add_dependencies(dn_object_detect ${PROJECT_NAME}_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(dn_object_detect
    ${catkin_LIBRARIES} darknet_ros
 )
 
-target_link_libraries(dn_object_detect_modified
-   ${catkin_LIBRARIES}  darknet_ros
-)
 #############
 ## Install ##
 #############

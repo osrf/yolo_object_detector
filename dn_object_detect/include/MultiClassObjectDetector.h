@@ -5,6 +5,7 @@
 //  Created by Xun Wang on 12/05/16.
 //  Copyright (c) 2016 Xun Wang. All rights reserved.
 //
+// Changed according to the new vision_messages proposed by OSRF
 
 #ifndef __pr2_perception__MultiClassObjectDetector__
 #define __pr2_perception__MultiClassObjectDetector__
@@ -23,20 +24,22 @@
 
 #include <yolo.h>
 
-#include "dn_object_detect/ObjectInfo.h"
+//new vision proposal messages
+#include <vision_msgs/BoundingBox2D.h>
+#include <vision_msgs/Detection2D.h>
+#include <vision_msgs/Detection2DArray.h>
+#include <vision_msgs/ObjectHypothesis.h>
 
+using namespace std;
+using namespace ros;
 
 #ifdef OPENCV
 image ipl_to_image(IplImage* src);
 #endif
 
-
-using namespace std;
-using namespace ros;
-
 namespace uts_perp {
 
-typedef std::vector<dn_object_detect::ObjectInfo> DetectedList;
+typedef std::vector<vision_msgs::Detection2D> DetectedList;
 
 
 class MultiClassObjectDetector
@@ -44,7 +47,7 @@ class MultiClassObjectDetector
 public:
   MultiClassObjectDetector();
   virtual ~MultiClassObjectDetector();
-  
+
   void init();
   void fini();
 
@@ -55,7 +58,7 @@ private:
   image_transport::ImageTransport imgTrans_;
   image_transport::Publisher imgPub_;
   image_transport::Subscriber imgSub_;
-  
+
   Publisher dtcPub_;
 
   bool doDetection_;
@@ -67,19 +70,19 @@ private:
 
   boost::mutex mutex_;
   boost::condition_variable imageCon_;
-  
+
   boost::thread * object_detect_thread_;
-  
+
   sensor_msgs::ImageConstPtr imgMsgPtr_;
 
   std::string cameraDevice_;
 
   CallbackQueue imgQueue_;
-  
+
   AsyncSpinner * procThread_;
-  
+
   cv_bridge::CvImagePtr cv_ptr_;
-  
+
   std::vector<std::string> classLabels_;
   int nofClasses_;
 
@@ -103,7 +106,7 @@ private:
   void drawDebug( const DetectedList & objs );
   void initClassLabels( const std::string & filename );
 };
-  
+
 } // namespace uts_perp
 
 #endif /* defined(__pr2_perception__MultiClassObjectDetector__) */

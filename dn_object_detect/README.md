@@ -7,4 +7,4 @@ This is a ROS node for muli-class object detection using darknet/yolo Deep Neura
 2) Then, `catkin_make`
 ```
 ## Running Node
-```roslaunch dn_object_detect objdetect_modified.launch```
+```roslaunch dn_object_detect objdetect.launch```
