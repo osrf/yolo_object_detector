@@ -173,10 +173,7 @@ add_executable(dn_object_detect
 add_dependencies(dn_object_detect ${catkin_EXPORTED_TARGETS})
 #add_dependencies(dn_object_detect ${PROJECT_NAME}_generate_messages_cpp)
 
-## Specify libraries to link a library or executable target against
-target_link_libraries(dn_object_detect
-   ${catkin_LIBRARIES} darknet_ros
-)
+target_link_libraries( dn_object_detect ${catkin_LIBRARIES} )
 
 #############
 ## Install ##
