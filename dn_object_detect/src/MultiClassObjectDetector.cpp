@@ -147,11 +147,11 @@ void MultiClassObjectDetector::init()
 
     initialised_ = true;
     
-    dtcPub_ = priImgNode_.advertise<vision_msgs::Detection2DArray>( "/dn_object_detect_/detected_objects", 1,
+    dtcPub_ = priImgNode_.advertise<vision_msgs::Detection2DArray>( "objects", 1,
                                                                         boost::bind( &MultiClassObjectDetector::startDetection, this ),
                                                                         boost::bind( &MultiClassObjectDetector::stopDetection, this) );
 
-    imgPub_ = imgTrans_.advertise( "/dn_object_detect_/debug_view", 1,
+    imgPub_ = imgTrans_.advertise( "debug_image", 1,
                                    boost::bind( &MultiClassObjectDetector::startDebugView, this ),
                                    boost::bind( &MultiClassObjectDetector::stopDebugView, this) );
 }

@@ -1,0 +1,19 @@
+<launch>
+  <env name="LD_LIBRARY_PATH" value="/usr/local/cuda-8.0/lib64:$(env LD_LIBRARY_PATH)"/>
+  <node pkg="dn_object_detect" type="dn_object_detect" name="dn_object_detect" output="screen">
+    <param name="camera" type="str" value="/usb_cam_node/image_raw"/>
+    <!--<param name="_image_transport" type="str" value="compressed"/>-->
+    <param name="yolo_config" type="str" value="$(find dn_object_detect)/data/yolo.cfg"/>
+    <param name="yolo_model" type="str" value="$(find dn_object_detect)/data/yolo.weights"/>
+    <param name="class_names" type="str" value="$(find dn_object_detect)/data/coco.names"/>
+    <param name="threshold" type="double" value="0.4"/>
+  </node>
+
+  <node pkg="usb_cam" type="usb_cam_node" name="usb_cam_node" output="screen">
+    <param name="pixel_format" value="yuyv"/>
+  </node>
+
+  <node pkg="image_view" type="image_view" name="image_view">
+    <remap from="image" to="debug_image"/>
+  </node>
+</launch>
