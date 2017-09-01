@@ -1,3 +1,4 @@
+#pragma GCC diagnostic ignored "-Wunused-result"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

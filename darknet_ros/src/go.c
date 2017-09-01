@@ -1,3 +1,4 @@
+#pragma GCC diagnostic ignored "-Wunused-result"
 #include "network.h"
 #include "utils.h"
 #include "parser.h"

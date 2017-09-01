@@ -1,3 +1,4 @@
+#pragma GCC diagnostic ignored "-Wunused-result"
 #include "data.h"
 #include "utils.h"
 #include "image.h"

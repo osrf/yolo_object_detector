@@ -1,3 +1,6 @@
+#pragma GCC diagnostic ignored "-Wunused-result"
+#pragma GCC diagnostic ignored "-Wimplicit-function-declaration"
+#pragma GCC diagnostic ignored "-Wint-conversion"
 #include "image.h"
 #include "utils.h"
 #include "blas.h"
