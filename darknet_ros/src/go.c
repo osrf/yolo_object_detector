@@ -443,7 +443,7 @@ void engine_go(char *filename, char *weightfile, int multi)
     char *one = calloc(91, sizeof(char));
     char *two = calloc(91, sizeof(char));
     int passed = 0;
-    while(1) {
+    while(1){
         char buff[256];
         int id = 0;
         int has_id = (scanf("%d", &id) == 1);
@@ -463,7 +463,7 @@ void engine_go(char *filename, char *weightfile, int multi)
             printf("=%s 1.0\n\n", ids);
         } else if (!strcmp(buff, "known_command")){
             char comm[256];
-           if( scanf("%s", comm)==1);{
+            if(scanf("%s", comm)==1){
             int known = (!strcmp(comm, "protocol_version") ||
                     !strcmp(comm, "name") ||
                     !strcmp(comm, "version") ||
@@ -562,7 +562,7 @@ void engine_go(char *filename, char *weightfile, int multi)
             //print_board(board, 1, 0);
         } else if (!strcmp(buff, "final_status_list")){
             char type[256];
-           if( scanf("%s", type)==1){
+            if( scanf("%s", type)==1){
             fprintf(stderr, "final_status\n");
             char *line = fgetl(stdin);
             free(line);
@@ -593,7 +593,8 @@ void engine_go(char *filename, char *weightfile, int multi)
                 }
             } else {
                 printf("?%s unknown command\n\n", ids);
-            }}
+            }
+        }
         } else {
             char *line = fgetl(stdin);
             free(line);

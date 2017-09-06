@@ -946,11 +946,11 @@ void load_convolutional_weights_binary(layer l, FILE *fp)
     int i, j, k;
     for(i = 0; i < l.n; ++i){
         float mean = 0;
-       if( fread(&mean, sizeof(float), 1, fp) ==1){
+        if( fread(&mean, sizeof(float), 1, fp) ==1){
         for(j = 0; j < size/8; ++j){
             int index = i*size + j*8;
             unsigned char c = 0;
-          if (fread(&c, sizeof(char), 1, fp)==1){
+            if (fread(&c, sizeof(char), 1, fp)==1){
             for(k = 0; k < 8; ++k){
                 if (j*8 + k >= size) break;
                 l.weights[index + k] = (c & 1<<k) ? mean : -mean;
@@ -973,8 +973,8 @@ void load_convolutional_weights(layer l, FILE *fp)
         //return;
     }
     int num = l.n*l.c*l.size*l.size;
-   int b = fread(l.biases, sizeof(float), l.n, fp);
-   assert (b==1);
+    int b = fread(l.biases, sizeof(float), l.n, fp);
+    assert (b==1);
     if (l.batch_normalize && (!l.dontloadscales)){
         int s = fread(l.scales, sizeof(float), l.n, fp);
         int r_m = fread(l.rolling_mean, sizeof(float), l.n, fp);
@@ -996,8 +996,8 @@ void load_convolutional_weights(layer l, FILE *fp)
             fill_cpu(l.n, 0, l.rolling_variance, 1);
         }
     }
-   int w = fread(l.weights, sizeof(float), num, fp);
-   assert (w==1);
+    int w = fread(l.weights, sizeof(float), num, fp);
+    assert (w==1);
     if(l.adam){
         int  m = fread(l.m, sizeof(float), num, fp);
         int v = fread(l.v, sizeof(float), num, fp);
