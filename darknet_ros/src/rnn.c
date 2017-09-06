@@ -143,7 +143,7 @@ void train_char_rnn(char *cfgfile, char *weightfile, char *filename, int clear, 
 
         text = calloc(size+1, sizeof(char));
         int t = fread(text, 1, size, fp);
-        assert(t ==1);
+        // assert(t ==1);
         fclose(fp);
     }
 

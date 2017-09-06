@@ -897,7 +897,7 @@ void load_connected_weights(layer l, FILE *fp, int transpose)
 {
     int b = fread(l.biases, sizeof(float), l.outputs, fp);
     int w = fread(l.weights, sizeof(float), l.outputs*l.inputs, fp);
-    assert(b ==1 && w==1);
+    // assert(b ==1 && w==1);
     if(transpose){
         transpose_matrix(l.weights, l.inputs, l.outputs);
     }
@@ -907,7 +907,7 @@ void load_connected_weights(layer l, FILE *fp, int transpose)
         int s = fread(l.scales, sizeof(float), l.outputs, fp);
         int r_m = fread(l.rolling_mean, sizeof(float), l.outputs, fp);
         int r_v = fread(l.rolling_variance, sizeof(float), l.outputs, fp);
-        assert(s==1 && r_v ==1 && r_m ==1);
+        // assert(s==1 && r_v ==1 && r_m ==1);
         //printf("Scales: %f mean %f variance\n", mean_array(l.scales, l.outputs), variance_array(l.scales, l.outputs));
         //printf("rolling_mean: %f mean %f variance\n", mean_array(l.rolling_mean, l.outputs), variance_array(l.rolling_mean, l.outputs));
         //printf("rolling_variance: %f mean %f variance\n", mean_array(l.rolling_variance, l.outputs), variance_array(l.rolling_variance, l.outputs));
@@ -924,7 +924,7 @@ void load_batchnorm_weights(layer l, FILE *fp)
     int s = fread(l.scales, sizeof(float), l.c, fp);
     int r_m = fread(l.rolling_mean, sizeof(float), l.c, fp);
     int r_v = fread(l.rolling_variance, sizeof(float), l.c, fp);
-    assert(s==1 && r_v ==1 && r_m ==1);
+    // assert(s==1 && r_v ==1 && r_m ==1);
 #ifdef GPU
     if(gpu_index >= 0){
         push_batchnorm_layer(l);
@@ -935,12 +935,12 @@ void load_batchnorm_weights(layer l, FILE *fp)
 void load_convolutional_weights_binary(layer l, FILE *fp)
 {
    int b = fread(l.biases, sizeof(float), l.n, fp);
-   assert (b==1);
+   // assert (b==1);
     if (l.batch_normalize && (!l.dontloadscales)){
        int s = fread(l.scales, sizeof(float), l.n, fp);
        int r_m = fread(l.rolling_mean, sizeof(float), l.n, fp);
        int r_v = fread(l.rolling_variance, sizeof(float), l.n, fp);
-       assert(s==1 && r_v ==1 && r_m ==1);   
+       // assert(s==1 && r_v ==1 && r_m ==1);   
     }
     int size = l.c*l.size*l.size;
     int i, j, k;
@@ -974,12 +974,12 @@ void load_convolutional_weights(layer l, FILE *fp)
     }
     int num = l.n*l.c*l.size*l.size;
     int b = fread(l.biases, sizeof(float), l.n, fp);
-    assert (b==1);
+    // assert (b==1);
     if (l.batch_normalize && (!l.dontloadscales)){
         int s = fread(l.scales, sizeof(float), l.n, fp);
         int r_m = fread(l.rolling_mean, sizeof(float), l.n, fp);
         int r_v = fread(l.rolling_variance, sizeof(float), l.n, fp);
-        assert(s==1 && r_v ==1 && r_m ==1);
+        // assert(s==1 && r_v ==1 && r_m ==1);
         if(0){
             int i;
             for(i = 0; i < l.n; ++i){
@@ -997,11 +997,11 @@ void load_convolutional_weights(layer l, FILE *fp)
         }
     }
     int w = fread(l.weights, sizeof(float), num, fp);
-    assert (w==1);
+    // assert (w==1);
     if(l.adam){
         int  m = fread(l.m, sizeof(float), num, fp);
         int v = fread(l.v, sizeof(float), num, fp);
-        assert (m ==1 && v == 1);
+        // assert (m ==1 && v == 1);
     }
     //if(l.c == 3) scal_cpu(num, 1./256, l.weights, 1);
     if (l.flipped) {
@@ -1035,7 +1035,7 @@ void load_weights_upto(network *net, char *filename, int cutoff)
     int min = fread(&minor, sizeof(int), 1, fp);
     int rev = fread(&revision, sizeof(int), 1, fp);
     int net_s = fread(net->seen, sizeof(int), 1, fp);
-    assert (maj ==1 && min ==1 && rev ==1 && net_s ==1);
+    // assert (maj ==1 && min ==1 && rev ==1 && net_s ==1);
     int transpose = (major > 1000) || (minor > 1000);
 
     int i;
@@ -1074,7 +1074,7 @@ void load_weights_upto(network *net, char *filename, int cutoff)
             int size = l.size*l.size*l.c*l.n*locations;
             int b = fread(l.biases, sizeof(float), l.outputs, fp);
             int w = fread(l.weights, sizeof(float), size, fp);
-            assert(b ==1 && w == 1); 
+            // assert(b ==1 && w == 1); 
 #ifdef GPU
             if(gpu_index >= 0){
                 push_local_layer(l);
