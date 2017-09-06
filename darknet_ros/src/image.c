@@ -1,6 +1,3 @@
-#pragma GCC diagnostic ignored "-Wunused-result"
-#pragma GCC diagnostic ignored "-Wimplicit-function-declaration"
-#pragma GCC diagnostic ignored "-Wint-conversion"
 #include "image.h"
 #include "utils.h"
 #include "blas.h"
@@ -14,7 +11,6 @@
 #include "stb_image_write.h"
 
 #ifdef OPENCV
-// #include <opencv2/core/core_c.h>
 #include "opencv2/highgui/highgui_c.h"
 #include "opencv2/imgproc/imgproc_c.h"
 #include "opencv2/videoio/videoio_c.h"

@@ -1,4 +1,3 @@
-#pragma GCC diagnostic ignored "-Wunused-result"
 #include "data.h"
 #include "utils.h"
 #include "image.h"
@@ -956,12 +955,13 @@ data load_cifar10_data(char *filename)
     if(!fp) file_error(filename);
     for(i = 0; i < 10000; ++i){
         unsigned char bytes[3073];
-        fread(bytes, 1, 3073, fp);
+       if( fread(bytes, 1, 3073, fp)==1){
         int class = bytes[0];
         y.vals[i][class] = 1;
         for(j = 0; j < X.cols; ++j){
             X.vals[i][j] = (double)bytes[j+1];
         }
+    }
     }
     //translate_data_rows(d, -128);
     scale_data_rows(d, 1./255);
@@ -1020,12 +1020,13 @@ data load_all_cifar10()
         if(!fp) file_error(buff);
         for(i = 0; i < 10000; ++i){
             unsigned char bytes[3073];
-            fread(bytes, 1, 3073, fp);
+           if( fread(bytes, 1, 3073, fp)==1){
             int class = bytes[0];
             y.vals[i+b*10000][class] = 1;
             for(j = 0; j < X.cols; ++j){
                 X.vals[i+b*10000][j] = (double)bytes[j+1];
             }
+        }
         }
         fclose(fp);
     }
