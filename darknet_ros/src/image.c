@@ -11,6 +11,7 @@
 #include "stb_image_write.h"
 
 #ifdef OPENCV
+#include "opencv2/imgcodecs/imgcodecs_c.h"
 #include "opencv2/highgui/highgui_c.h"
 #include "opencv2/imgproc/imgproc_c.h"
 #include "opencv2/videoio/videoio_c.h"
@@ -491,7 +492,10 @@ image load_image_cv(char *filename, int channels)
         fprintf(stderr, "Cannot load image \"%s\"\n", filename);
         char buff[256];
         sprintf(buff, "echo %s >> bad.list", filename);
-        system(buff);
+        int check = system(buff);
+        if (check == -1){
+        printf("Cannot load the image\n");
+        }
         return make_image(10,10,3);
         //exit(0);
     }
