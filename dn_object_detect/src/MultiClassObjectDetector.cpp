@@ -4,7 +4,7 @@
 //
 //  Created by Xun Wang on 12/05/16.
 //  Copyright (c) 2016 Xun Wang. All rights reserved.
-// 
+//
 // Code  according to the Standard vision_msgs proposed by OSRF
 
 #include <opencv2/core/core.hpp>
@@ -146,7 +146,7 @@ void MultiClassObjectDetector::init()
     procThread_->start();
 
     initialised_ = true;
-    
+
     dtcPub_ = priImgNode_.advertise<vision_msgs::Detection2DArray>( "objects", 1,
                                                                         boost::bind( &MultiClassObjectDetector::startDetection, this ),
                                                                         boost::bind( &MultiClassObjectDetector::stopDetection, this) );
@@ -301,7 +301,7 @@ void MultiClassObjectDetector::startDetection()
     cv_ptr_.reset();
     imgMsgPtr_.reset();
 
-    image_transport::TransportHints hints( "compressed" );
+    image_transport::TransportHints hints( "raw" );
     imgSub_ = imgTrans_.subscribe( cameraDevice_, 1, &MultiClassObjectDetector::processingRawImages, this, hints );
 
     object_detect_thread_ = new boost::thread( &MultiClassObjectDetector::doObjectDetection, this );
@@ -331,7 +331,7 @@ void MultiClassObjectDetector::stopDetection()
 void MultiClassObjectDetector::publishDetectedObjects( const DetectedList & objs )
 {
 
-   
+
     vision_msgs::Detection2DArray tObjMsg;
     tObjMsg.header= cv_ptr_->header;
     tObjMsg.detections.resize(objs.size());
@@ -346,7 +346,7 @@ void MultiClassObjectDetector::publishDetectedObjects( const DetectedList & objs
 std::string Convert (float number){
     std::ostringstream buff;
     buff<<number;
-    return buff.str();   
+    return buff.str();
 }
 
 void MultiClassObjectDetector::drawDebug( const DetectedList & objs )
@@ -360,12 +360,12 @@ void MultiClassObjectDetector::drawDebug( const DetectedList & objs )
         vision_msgs::ObjectHypothesisWithPose objectClass = obj.results[0];
         int id= objectClass.id;
         std::string objectClassName = classLabels_[id];
-        cv::rectangle(cv_ptr_->image, cv::Rect(obj.bbox.center.x,obj.bbox.center.y,obj.bbox.size_x,obj.bbox.size_y),boundColour,2);
+        cv::rectangle(cv_ptr_->image, cv::Rect(obj.bbox.center.x-obj.bbox.size_x/2,obj.bbox.center.y-obj.bbox.size_y/2,obj.bbox.size_x,obj.bbox.size_y),boundColour,2);
         //std::string box_text = format( "%s prob=%.2f", id , objectClass.score);
         std::string box_text = objectClassName + "  " + Convert(floor((objectClass.score)*100)) + " % ";
         // Calculate the position for annotated text (make sure we don't
         // put illegal values in there):
-        cv::Point2i txpos( std::max (int(obj.bbox.center.x-10),0),std::max (int(obj.bbox.center.y)-10,0));
+        cv::Point2i txpos( std::max (int(obj.bbox.center.x-obj.bbox.size_x/2)-10,0),std::max (int(obj.bbox.center.y-obj.bbox.size_y/2)-10,0));
         // And now put it into the image:
         putText(cv_ptr_->image, box_text,txpos,FONT_HERSHEY_PLAIN, 0.7, CV_RGB(0,255,0), 0.8);
 
@@ -389,7 +389,7 @@ void MultiClassObjectDetector::consolidateDetectedObjects( const image * im, box
         if (prob > threshold_) {
             int width = pow( prob, 0.5 ) * 10 + 1;
 
-    
+
             vision_msgs::Detection2D newObj;
             vision_msgs::ObjectHypothesisWithPose objectType;
             vision_msgs::BoundingBox2D objectBB;
@@ -418,16 +418,10 @@ void MultiClassObjectDetector::consolidateDetectedObjects( const image * im, box
             if (right > im->w-1)  right = im->w-1;
             if (bot > im->h-1)    bot = im->h-1;
 
-            //      newObj.tl_x = left < 0 ? 0 : left;
-            //      newObj.tl_y = top < 0 ? 0 : top;
-            //      newObj.width = right - newObj.tl_x;
-            //      newObj.height = bot - newObj.tl_y;
-
-            //change
-            objectBB.center.x= left < 0 ? 0 : left;
-            objectBB.center.y= top < 0 ? 0 : top;
-            objectBB.size_x= right - objectBB.center.x;
-            objectBB.size_y = bot - objectBB.center.y;
+            objectBB.center.x= (right + left)/2;
+            objectBB.center.y= (bot + top )/2;
+            objectBB.size_x= right - left;
+            objectBB.size_y = bot - top;
             newObj.bbox= objectBB;
 
             objList.push_back( newObj );
